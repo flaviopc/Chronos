@@ -18,8 +18,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollBar;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -27,69 +29,25 @@ import javax.swing.table.DefaultTableModel;
 import model.Tempo;
 
 /**
- *
+ * Classe principal da aplicação
  * @author Flavio
  */
 public class Principal extends javax.swing.JFrame {
-
-    //deixa os dados centralizados
-    private class CellRenderer extends DefaultTableCellRenderer {
-
-        public CellRenderer() {
-            super();
-        }
-
-        public Component getTableCellRendererComponent(JTable table, Object value,
-                boolean isSelected, boolean hasFocus, int row, int column) {
-            this.setHorizontalAlignment(CENTER);
-            return super.getTableCellRendererComponent(table, value, isSelected,
-                    hasFocus, row, column);
-        }
-    }
-    /**
-     * Creates new form Principal
-     */
-    //variaveis do cronometro
+    
+    //variáveis do cronometro
     private Timer timer;
     private int segundoAtual = 0;
     private int minutoAtual = 0;
     private int horaAtual = 0;
     private final int velocidade = 1000;
-
-    public void iniciarContagem() {
-        ActionListener action = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                segundoAtual++;
-
-                if (segundoAtual == 60) {
-                    minutoAtual++;
-                    segundoAtual = 0;
-                }
-
-                if (minutoAtual == 60) {
-                    horaAtual++;
-                    minutoAtual = 0;
-                }
-
-                String hr = horaAtual <= 9 ? "0" + horaAtual : horaAtual + "";
-                String min = minutoAtual <= 9 ? "0" + minutoAtual : minutoAtual + "";
-                String seg = segundoAtual <= 9 ? "0" + segundoAtual : segundoAtual + "";
-
-                lbCronometro.setText(hr + ":" + min + ":" + seg);
-            }
-        };
-        timer = new Timer(velocidade, action);
-        timer.start();
-    }
-
     boolean iniciou = false;
-    Tempo tempo;
     Cronometro cronometro;
+    
+    Tempo tempo;    
     int numero = 1;
     int linha = 0;
     int corredor = 0;
-    ArrayList<model.numero> numeroList = new ArrayList<model.numero>();
+    ArrayList<model.Numero> numeroList = new ArrayList<model.Numero>();
 
     public Principal() throws ClassNotFoundException, SQLException {
         initComponents();
@@ -118,7 +76,7 @@ public class Principal extends javax.swing.JFrame {
     private void initComponents() {
 
         jMenuItem5 = new javax.swing.JMenuItem();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        scrollTabela = new javax.swing.JScrollPane();
         tbTempo = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -143,6 +101,12 @@ public class Principal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("CHRONOS 0.1");
+
+        scrollTabela.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                scrollTabelaPropertyChange(evt);
+            }
+        });
 
         tbTempo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tbTempo.setModel(new javax.swing.table.DefaultTableModel(
@@ -169,7 +133,7 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         tbTempo.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(tbTempo);
+        scrollTabela.setViewportView(tbTempo);
         if (tbTempo.getColumnModel().getColumnCount() > 0) {
             tbTempo.getColumnModel().getColumn(0).setResizable(false);
             tbTempo.getColumnModel().getColumn(0).setPreferredWidth(25);
@@ -336,7 +300,7 @@ public class Principal extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(scrollTabela, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -346,7 +310,7 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 457, Short.MAX_VALUE)
+                    .addComponent(scrollTabela, javax.swing.GroupLayout.DEFAULT_SIZE, 457, Short.MAX_VALUE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -364,7 +328,7 @@ public class Principal extends javax.swing.JFrame {
         String numero = txtAddNum.getText();
         try {
             if (tbTempo.getRowCount() > corredor) {
-                
+
                 if (!inserirAtleta(numero)) {
                     JOptionPane.showMessageDialog(null, "Atleta não encontrado, verifique se informou o numero correto!");
                 } else {
@@ -398,8 +362,7 @@ public class Principal extends javax.swing.JFrame {
     private void btIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btIniciarActionPerformed
         // TODO add your handling code here:
         if (!iniciou) {
-            iniciarContagem();
-            //btAdd.setEnabled(true);
+            iniciarContagem();            
             txtAddNum.setEnabled(true);
             btIniciar.setEnabled(false);
             iniciou = true;
@@ -407,7 +370,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btIniciarActionPerformed
 
     private void jMenu3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu3MouseClicked
-      
+
     }//GEN-LAST:event_jMenu3MouseClicked
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
@@ -432,7 +395,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void btAddMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btAddMouseReleased
         // TODO add your handling code here:
-         btAdd.setEnabled(false);
+        btAdd.setEnabled(false);
         txtAddNum.setText("");
     }//GEN-LAST:event_btAddMouseReleased
 
@@ -440,9 +403,14 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenu3ActionPerformed
 
+    private void scrollTabelaPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_scrollTabelaPropertyChange
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_scrollTabelaPropertyChange
+
     public DefaultListModel CarregarNumero() throws ClassNotFoundException, SQLException {
         DefaultListModel dlm = new DefaultListModel();
-        for (model.numero n : numeroList) {
+        for (model.Numero n : numeroList) {
             dlm.addElement(n.getNumero());
         }
 
@@ -456,7 +424,6 @@ public class Principal extends javax.swing.JFrame {
                     @Override
                     public boolean dispatchKeyEvent(KeyEvent e) {
                         if (e.getID() == e.KEY_RELEASED && e.getKeyCode() == KeyEvent.VK_M && iniciou) {
-
                             tempo.setTempo(getLbCronometro());
                             try {
                                 new TempoDao().insere(tempo);
@@ -469,9 +436,10 @@ public class Principal extends javax.swing.JFrame {
                             } catch (SQLException ex) {
                                 Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
                             }
-
+                            
                             addLinha();
-
+                            moverScroll();
+                            
                             tbTempo.setValueAt(tempo.getId(), linha, 0);
                             tbTempo.setValueAt(tempo.getTempo(), linha++, 1);
 
@@ -488,10 +456,28 @@ public class Principal extends javax.swing.JFrame {
         return lbCronometro.getText();
     }
 
+    
+    /**
+     * Move o scroll para o final da tabela a medida que novas linhas são inseridas
+     * @return void
+     */
+    public void moverScroll(){
+            SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                JScrollBar bar = scrollTabela.getVerticalScrollBar();
+                bar.setValue(bar.getMaximum());
+            }
+        });
+    }
+    
+    /**
+     * Adiciona uma nova linha vazia na tabela 
+     */
     public void addLinha() {
         DefaultTableModel dtm = (DefaultTableModel) tbTempo.getModel();
         String[] linha = {""};
-        dtm.addRow(linha);
+        dtm.addRow(linha);                    
     }
 
     public void carregarTabela() throws SQLException {
@@ -516,12 +502,9 @@ public class Principal extends javax.swing.JFrame {
         }
 
     }
-
+    
     public boolean inserirAtleta(String n) throws ClassNotFoundException, SQLException {
-        boolean r = false;
-        /*   if (!txtAddNum.getText().isEmpty()) {
-         tbTempo.setValueAt(txtAddNum.getText(), corredor++, 2);
-         }*/
+        boolean r = false;      
 
         for (int i = 0; i < lisAtletas.getModel().getSize(); i++) {
             if (n.equals(lisAtletas.getModel().getElementAt(i))) {
@@ -538,6 +521,54 @@ public class Principal extends javax.swing.JFrame {
         }
 
         return false;
+    }
+    
+     /**
+     * Inicia a Contagem do cronometro
+     */
+    public void iniciarContagem() {
+        ActionListener action = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                segundoAtual++;
+
+                if (segundoAtual == 60) {
+                    minutoAtual++;
+                    segundoAtual = 0;
+                }
+
+                if (minutoAtual == 60) {
+                    horaAtual++;
+                    minutoAtual = 0;
+                }
+
+                String hr = horaAtual <= 9 ? "0" + horaAtual : horaAtual + "";
+                String min = minutoAtual <= 9 ? "0" + minutoAtual : minutoAtual + "";
+                String seg = segundoAtual <= 9 ? "0" + segundoAtual : segundoAtual + "";
+
+                lbCronometro.setText(hr + ":" + min + ":" + seg);
+            }
+        };
+        timer = new Timer(velocidade, action);
+        timer.start();
+    }
+    
+     /**
+     * Classe para personalizar a tabela
+     */
+    private class CellRenderer extends DefaultTableCellRenderer {
+
+        public CellRenderer() {
+            super();
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value,
+                boolean isSelected, boolean hasFocus, int row, int column) {
+            this.setHorizontalAlignment(CENTER);
+            return super.getTableCellRendererComponent(table, value, isSelected,
+                    hasFocus, row, column);
+        }
     }
 
     /**
@@ -600,10 +631,10 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lbCronometro;
     private javax.swing.JList lisAtletas;
+    private javax.swing.JScrollPane scrollTabela;
     private javax.swing.JTable tbTempo;
     private javax.swing.JTextField txtAddNum;
     // End of variables declaration//GEN-END:variables

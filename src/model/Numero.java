@@ -1,10 +1,10 @@
 package model;
 
-public class numero {
+public class Numero {
 	//private String chave;
 	private String numero;
 	private String sintuacao;
-	public numero(){
+	public Numero(){
 	}
 	/*public String getChave() {
 		return chave;

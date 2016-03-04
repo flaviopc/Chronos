@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import model.Tempo;
-import model.numero;
+import model.Numero;
 
 /**
  *
@@ -133,9 +133,9 @@ public class TempoDao {
     }
    
      //Selecionar os Numeros do banco
-    public ArrayList<numero> selectN(){ 
-		numero t = new numero();
-		ArrayList<numero> Numero = new ArrayList<numero>();
+    public ArrayList<Numero> selectN(){ 
+		Numero t = new Numero();
+		ArrayList<Numero> Numero = new ArrayList<Numero>();
 
 		ResultSet resultado = null;
 		Object[][] r = null;
@@ -150,7 +150,7 @@ public class TempoDao {
 
 
 			while (resultado.next()){ 
-				numero novo_t = new numero();
+				Numero novo_t = new Numero();
 				novo_t.setNumero( resultado.getString("ATL_numero"));
 				novo_t.setSintuacao("correndo");
 				Numero.add(novo_t);
@@ -161,7 +161,7 @@ public class TempoDao {
 
 		return  Numero;
 	}
-	//Insere numero do atleta pela ordem de chegada 
+	//Insere Numero do atleta pela ordem de chegada 
 	public boolean insereN(String numero) throws SQLException {
 		boolean sucesso = true;
 		if (conn != null) {            
