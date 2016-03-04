@@ -458,8 +458,7 @@ public class Principal extends javax.swing.JFrame {
 
     
     /**
-     * Move o scroll para o final da tabela a medida que novas linhas são inseridas
-     * @return void
+     * Move o scroll para o final da tabela a medida que novas linhas são inseridas    
      */
     public void moverScroll(){
             SwingUtilities.invokeLater(new Runnable() {
