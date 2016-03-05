@@ -63,7 +63,7 @@ public class TempoDao {
                     ResultSet res = ps.executeQuery();                   
                     while(res.next()){
                         Tempo tempo = new Tempo();
-                        tempo.setId(res.getInt(1));
+                        tempo.setCodigo(res.getInt(1));
                         tempo.setTempo(res.getString(2));
                         tempos.add(tempo);                       
                     }
@@ -91,7 +91,7 @@ public class TempoDao {
                 try (PreparedStatement ps = conn.prepareStatement(sql)) {
                     ResultSet res = ps.executeQuery();
                     while(res.next()){
-                        tempo.setId(res.getInt(1));
+                        tempo.setCodigo(res.getInt(1));
                         tempo.setTempo(res.getString(2));
                     }
                     res.close();

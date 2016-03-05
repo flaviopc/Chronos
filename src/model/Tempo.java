@@ -9,7 +9,7 @@ package model;
  * @author Flavio
  */
 public class Tempo {
-    private int id;
+    private int codigo;
     private String tempo;   
 
     public Tempo(){}
@@ -18,12 +18,12 @@ public class Tempo {
         this.tempo = tempo;
     }
     
-    public int getId() {
-        return id;
+    public int getCodigo() {
+        return codigo;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
     }
 
     public String getTempo() {

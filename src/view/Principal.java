@@ -362,7 +362,7 @@ public class Principal extends javax.swing.JFrame {
                             addLinha();
                             moverScroll();
                             
-                            tbTempo.setValueAt(tempo.getId(), linha, 0);
+                            tbTempo.setValueAt(tempo.getCodigo(), linha, 0);
                             tbTempo.setValueAt(tempo.getTempo(), linha++, 1);
 
                             return true;
@@ -415,7 +415,7 @@ public class Principal extends javax.swing.JFrame {
             linha = 0;
             for (int i = 0; i < tempos.size(); i++) {
                 addLinha();
-                tbTempo.setValueAt(tempos.get(i).getId(), linha, 0);
+                tbTempo.setValueAt(tempos.get(i).getCodigo(), linha, 0);
                 tbTempo.setValueAt(tempos.get(i).getTempo(), linha++, 1);
             }
         } else {
