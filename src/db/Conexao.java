@@ -3,7 +3,6 @@ package db;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import oracle.jrockit.jfr.tools.ConCatRepository;
 
 public class Conexao {
 

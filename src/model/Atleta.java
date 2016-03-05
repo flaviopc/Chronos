@@ -1,7 +1,8 @@
 package model;
 
 public class Atleta {
-	private String numero;
+
+    private String numero;
 	private String nome;
 	private String categoria;
 

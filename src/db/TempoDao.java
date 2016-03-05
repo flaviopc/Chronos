@@ -31,7 +31,7 @@ public class TempoDao {
         boolean sucesso = true;
         if (conn != null) {            
             try {
-                String sql = "insert into TEMPO (TEM_id,TEM_tempo) values (?,?)";
+                String sql = "insert into TEMPO (TEM_codigo,TEM_tempo) values (?,?)";
            
                 try (PreparedStatement ps = conn.prepareStatement(sql)) {
                     ps.setString(1, null);
@@ -86,7 +86,7 @@ public class TempoDao {
         Tempo tempo = new Tempo();
         if (conn != null) {            
             try {
-                String sql = "select * from tempo where TEM_id=(select max(TEM_id) from TEMPO)";
+                String sql = "select * from tempo where TEM_codigo=(select max(TEM_codigo) from TEMPO)";
            
                 try (PreparedStatement ps = conn.prepareStatement(sql)) {
                     ResultSet res = ps.executeQuery();
@@ -174,12 +174,12 @@ public class TempoDao {
 				}
 
 			} catch (SQLException e) {
-				System.out.println("InformaÃ§Ãµes sobre o erro: "+e.getMessage());
+				System.out.println("Informações sobre o erro: "+e.getMessage());
 			}finally{
 				conn.close();
 			}
 		} else {
-			System.out.println("VocÃª precisa criar uma conexÃ£o com o banco de dados!");
+			System.out.println("Você precisa criar uma conexão com o banco de dados!");
 		}
 
 		return sucesso;

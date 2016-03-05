@@ -6,7 +6,6 @@
 package model;
 
 /**
- *
  * @author Flavio
  */
 public class Tempo {

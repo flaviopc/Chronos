@@ -6,12 +6,14 @@ public class Numero {
 	private String sintuacao;
 	public Numero(){
 	}
-	/*public String getChave() {
+	
+        /*public String getChave() {
 		return chave;
 	}
 	public void setChave(String chave) {
 		this.chave = chave;
 	}*/
+        
 	public String getNumero() {
 		return numero;
 	}
