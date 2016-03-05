@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<architect-project version="1.0" appversion="1.0.7">
+ <project-name>ModeloDados</project-name>
+ <print-settings numCopies="1" zoom="1.0" pageNumbersPrinted="true" orientation="1" paperWidth="612.0" paperHeight="792.0" leftBorder="50.0" rightBorder="50.0" topBorder="50.0" bottomBorder="50.0" />
+ <project-data-sources>
+  <data-source id="DS0">
+   <property key="Logical" value="Modelo de Dados" />
+  </data-source>
+  <data-source id="DS2">
+   <property key="Connection Type" value="MySQL" />
+   <property key="Logical" value="MySQL" />
+   <property key="JDBC URL" value="jdbc:mysql://localhost:3306/" />
+   <property key="UID" value="root" />
+   <property key="PWD" value="f16cent@" />
+   <property key="ca.sqlpower.architect.etl.kettle.database" value="" />
+   <property key="ca.sqlpower.architect.etl.kettle.port" value="" />
+   <property key="ca.sqlpower.architect.etl.kettle.hostname" value="" />
+   <property key="ca.sqlpower.architect.etl.kettle.repos.login" value="" />
+   <property key="ca.sqlpower.architect.etl.kettle.repos.password" value="" />
+  </data-source>
+ </project-data-sources>
+ <source-databases>
+  <database id="DB0" populated="true" UUID="e7593922-f199-4d2f-a826-4e01ae8e221f" dbcs-ref="DS2" name="MySQL" physicalName="MySQL" >
+   <catalog id="CAT1" populated="false" UUID="fa47957e-7e2e-4c61-bf60-6d4436474c70" name="information_schema" nativeTerm="database" physicalName="information_schema" >
+   </catalog>
+   <catalog id="CAT2" populated="true" UUID="32451d9a-0888-4e02-88a7-1a0b424ee775" name="chronos" nativeTerm="database" physicalName="chronos" >
+    <table id="TAB3" populated="true" UUID="10a1336f-9121-4155-8675-ab16aecc1e11" name="atleta" objectType="TABLE" physicalName="atleta" >
+     <remarks></remarks>
+     <folder id="FOLTAB31" populated="true" name="Columns" physicalName="Columns" type="1">
+      <column id="COL4" populated="true" UUID="a0766190-a08d-4aed-a7a3-9d95e4460753" autoIncrement="true" name="ATL_numero" nullable="0" physicalName="ATL_numero" precision="10" primaryKeySeq="0" referenceCount="1" scale="0" sourceDataTypeName="INT" type="4" >
+       <remarks></remarks>
+      </column>
+      <column id="COL5" populated="true" UUID="dfec7b04-f01f-4a26-804e-e64624c8ec31" autoIncrement="false" name="ATL_nome" nullable="0" physicalName="ATL_nome" precision="60" referenceCount="1" scale="0" sourceDataTypeName="VARCHAR" type="12" >
+       <remarks></remarks>
+      </column>
+      <column id="COL6" populated="true" UUID="b818b71d-0dd2-4943-bf0b-23c026da448b" autoIncrement="false" name="ATL_categoria" nullable="1" physicalName="ATL_categoria" precision="40" referenceCount="1" scale="0" sourceDataTypeName="VARCHAR" type="12" >
+       <remarks></remarks>
+      </column>
+      </folder>
+      <folder id="FOLTAB33" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3">
+      </folder>
+      <folder id="FOLTAB32" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2">
+      </folder>
+      <folder id="FOLTAB34" populated="true" name="Indices" physicalName="Indices" type="4">
+      <index id="IDX7" populated="true" UUID="344d2175-d14c-4a39-a346-f846e46088d4" clustered="false" name="atleta_PK" physicalName="atleta_PK" primaryKeyIndex="true" qualifier="" unique="true" >
+       <index-column id="IDC8" populated="true" UUID="d3b5ce2e-480a-4bd2-9390-4761c26f7671" ascendingOrDescending="UNSPECIFIED" column-ref="COL4" name="ATL_numero" physicalName="ATL_numero" />
+      </index>
+     </folder>
+    </table>
+    <table id="TAB9" populated="true" UUID="1ef888a3-00da-47d9-ad36-f43b7db17de0" name="numero" objectType="TABLE" physicalName="numero" >
+     <remarks></remarks>
+     <folder id="FOLTAB91" populated="true" name="Columns" physicalName="Columns" type="1">
+      <column id="COL10" populated="true" UUID="f7d7d515-88f4-4a3b-9353-5119dcb3a032" autoIncrement="true" name="NUM_codigo" nullable="0" physicalName="NUM_codigo" precision="10" primaryKeySeq="0" referenceCount="1" scale="0" sourceDataTypeName="INT UNSIGNED" type="4" >
+       <remarks></remarks>
+      </column>
+      <column id="COL11" populated="true" UUID="8aa6feb2-705f-4464-b7fb-a3834baeafea" autoIncrement="false" defaultValue="0" name="NUM_numero" nullable="0" physicalName="NUM_numero" precision="10" referenceCount="1" scale="0" sourceDataTypeName="INT" type="4" >
+       <remarks></remarks>
+      </column>
+      </folder>
+      <folder id="FOLTAB93" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3">
+      </folder>
+      <folder id="FOLTAB92" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2">
+      </folder>
+      <folder id="FOLTAB94" populated="true" name="Indices" physicalName="Indices" type="4">
+      <index id="IDX12" populated="true" UUID="76566523-570c-487b-aa59-cc4db6b353a2" clustered="false" name="numero_PK" physicalName="numero_PK" primaryKeyIndex="true" qualifier="" unique="true" >
+       <index-column id="IDC13" populated="true" UUID="3ea31481-f980-42cd-aaf0-286ebdf1dcc2" ascendingOrDescending="UNSPECIFIED" column-ref="COL10" name="NUM_codigo" physicalName="NUM_codigo" />
+      </index>
+     </folder>
+    </table>
+    <table id="TAB14" populated="true" UUID="77ea661e-30bc-4d64-a755-856edd33c264" name="tempo" objectType="TABLE" physicalName="tempo" >
+     <remarks></remarks>
+     <folder id="FOLTAB141" populated="true" name="Columns" physicalName="Columns" type="1">
+      <column id="COL15" populated="true" UUID="5d2bde71-568c-4830-a156-9c18e7265398" autoIncrement="true" name="TEM_codigo" nullable="0" physicalName="TEM_codigo" precision="10" primaryKeySeq="0" referenceCount="1" scale="0" sourceDataTypeName="INT UNSIGNED" type="4" >
+       <remarks></remarks>
+      </column>
+      <column id="COL16" populated="true" UUID="a5482b12-025e-46ee-a876-7d88f148f804" autoIncrement="false" name="TEM_tempo" nullable="0" physicalName="TEM_tempo" precision="8" referenceCount="1" scale="0" sourceDataTypeName="TIME" type="92" >
+       <remarks></remarks>
+      </column>
+      </folder>
+      <folder id="FOLTAB143" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3">
+      </folder>
+      <folder id="FOLTAB142" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2">
+      </folder>
+      <folder id="FOLTAB144" populated="true" name="Indices" physicalName="Indices" type="4">
+      <index id="IDX17" populated="true" UUID="0752d9e0-f3fd-478a-94ba-baab7378d11f" clustered="false" name="tempo_PK" physicalName="tempo_PK" primaryKeyIndex="true" qualifier="" unique="true" >
+       <index-column id="IDC18" populated="true" UUID="4845c9db-dae0-4960-992c-beb130b559f1" ascendingOrDescending="UNSPECIFIED" column-ref="COL15" name="TEM_codigo" physicalName="TEM_codigo" />
+      </index>
+     </folder>
+    </table>
+   </catalog>
+   <catalog id="CAT19" populated="false" UUID="513bc6aa-896a-4f42-9f86-86fbf0366a4c" name="db_aula" nativeTerm="database" physicalName="db_aula" >
+   </catalog>
+   <catalog id="CAT20" populated="false" UUID="7a1eb803-bbe0-4782-a03d-1f6fe30da158" name="db_sys" nativeTerm="database" physicalName="db_sys" >
+   </catalog>
+   <catalog id="CAT21" populated="false" UUID="c762c2ec-31f5-43d0-8888-5c1decd7d8c1" name="laravel" nativeTerm="database" physicalName="laravel" >
+   </catalog>
+   <catalog id="CAT22" populated="false" UUID="97c8d83f-3a5c-4929-be0c-49dc2162b804" name="mvc" nativeTerm="database" physicalName="mvc" >
+   </catalog>
+   <catalog id="CAT23" populated="false" UUID="e27a0583-02df-4c33-aeee-75a254f9b48d" name="mysql" nativeTerm="database" physicalName="mysql" >
+   </catalog>
+   <catalog id="CAT24" populated="false" UUID="62fe8407-050b-4ef4-bdb3-65530904696c" name="performance_schema" nativeTerm="database" physicalName="performance_schema" >
+   </catalog>
+   <catalog id="CAT25" populated="false" UUID="646e8afb-b051-4ed6-b20d-a9ddd0e3f506" name="sistemaesporte" nativeTerm="database" physicalName="sistemaesporte" >
+   </catalog>
+   <catalog id="CAT26" populated="false" UUID="6d966f07-9ea9-485d-9b5e-3149b8f88f76" name="test" nativeTerm="database" physicalName="test" >
+   </catalog>
+   <relationships>
+   </relationships>
+  </database>
+ </source-databases>
+ <target-database id="ppdb" dbcs-ref="DS0">
+  <table id="TAB28" populated="true" UUID="3c8289db-6cb4-451c-89ba-121019476556" name="atleta" objectType="TABLE" physicalName="atleta" >
+   <remarks></remarks>
+   <folder id="FOLTAB281" populated="true" name="Columns" physicalName="Columns" type="1">
+    <column id="COL29" populated="true" UUID="2311dfb4-2360-4fea-912a-2e88ad0800fc" autoIncrement="true" defaultValue="" name="ATL_numero" nullable="0" physicalName="ATL_numero" precision="0" primaryKeySeq="0" referenceCount="1" scale="0" source-column-ref="COL4" sourceDataTypeName="INT" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
+     <remarks></remarks>
+    </column>
+    <column id="COL30" populated="true" UUID="6635a246-f6b1-4e73-b5e5-53e25f3d5a09" autoIncrement="false" defaultValue="" name="ATL_nome" nullable="0" physicalName="ATL_nome" precision="60" referenceCount="1" scale="0" source-column-ref="COL5" sourceDataTypeName="VARCHAR" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
+     <remarks></remarks>
+    </column>
+    <column id="COL31" populated="true" UUID="abfcbc05-5863-4902-9f96-84eddf6d0fdf" autoIncrement="false" defaultValue="" name="ATL_categoria" nullable="1" physicalName="ATL_categoria" precision="40" referenceCount="1" scale="0" source-column-ref="COL6" sourceDataTypeName="VARCHAR" type="12" userDefinedTypeUUID="831ac2d4-0e65-47ec-a0b7-62b7f6b8760a" >
+     <remarks></remarks>
+    </column>
+    </folder>
+    <folder id="FOLTAB283" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3">
+    </folder>
+    <folder id="FOLTAB282" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2">
+    </folder>
+    <folder id="FOLTAB284" populated="true" name="Indices" physicalName="Indices" type="4">
+    <index id="IDX32" populated="true" UUID="650bd37e-32d8-4206-bd5f-6448ae471767" clustered="false" name="atleta_PK" physicalName="atleta_PK" primaryKeyIndex="true" qualifier="" unique="true" >
+     <index-column id="IDC33" populated="true" UUID="17a2125a-e7bd-4e31-9987-0215d4c53e98" ascendingOrDescending="UNSPECIFIED" column-ref="COL29" name="ATL_numero" physicalName="ATL_numero" />
+    </index>
+   </folder>
+  </table>
+  <table id="TAB34" populated="true" UUID="6ceee9bf-a969-4b65-8339-a7eacdda531f" name="numero" objectType="TABLE" physicalName="numero" >
+   <remarks></remarks>
+   <folder id="FOLTAB341" populated="true" name="Columns" physicalName="Columns" type="1">
+    <column id="COL35" populated="true" UUID="8a489b52-0064-4b7b-ae4f-8efc47a2ebaa" autoIncrement="true" defaultValue="" name="NUM_codigo" nullable="0" physicalName="NUM_codigo" precision="0" primaryKeySeq="0" referenceCount="1" scale="0" source-column-ref="COL10" sourceDataTypeName="INT UNSIGNED" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
+     <remarks></remarks>
+    </column>
+    <column id="COL36" populated="true" UUID="11200e3f-f1d9-4e3f-9694-675e9f7730af" autoIncrement="false" defaultValue="0" name="NUM_numero" nullable="0" physicalName="NUM_numero" precision="0" referenceCount="1" scale="0" source-column-ref="COL11" sourceDataTypeName="INT" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
+     <remarks></remarks>
+    </column>
+    </folder>
+    <folder id="FOLTAB343" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3">
+    </folder>
+    <folder id="FOLTAB342" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2">
+    </folder>
+    <folder id="FOLTAB344" populated="true" name="Indices" physicalName="Indices" type="4">
+    <index id="IDX37" populated="true" UUID="bfbae63a-c48c-4e86-9ae4-cbeef560c14b" clustered="false" name="numero_PK" physicalName="numero_PK" primaryKeyIndex="true" qualifier="" unique="true" >
+     <index-column id="IDC38" populated="true" UUID="f4bbb13d-484a-42ad-8e12-6278da7dfabd" ascendingOrDescending="UNSPECIFIED" column-ref="COL35" name="NUM_codigo" physicalName="NUM_codigo" />
+    </index>
+   </folder>
+  </table>
+  <table id="TAB39" populated="true" UUID="eeb52f48-4ac8-4bce-8b36-37c02e4ec5fa" name="tempo" objectType="TABLE" physicalName="tempo" >
+   <remarks></remarks>
+   <folder id="FOLTAB391" populated="true" name="Columns" physicalName="Columns" type="1">
+    <column id="COL40" populated="true" UUID="72350a6a-61c8-493a-9eb0-5d1969c32bc4" autoIncrement="true" defaultValue="" name="TEM_codigo" nullable="0" physicalName="TEM_codigo" precision="0" primaryKeySeq="0" referenceCount="1" scale="0" source-column-ref="COL15" sourceDataTypeName="INT UNSIGNED" type="4" userDefinedTypeUUID="63b011c7-c81f-4c75-8271-632b3c87f727" >
+     <remarks></remarks>
+    </column>
+    <column id="COL41" populated="true" UUID="95d70a4f-17a7-4aa5-88b6-e50617468c88" autoIncrement="false" defaultValue="" name="TEM_tempo" nullable="0" physicalName="TEM_tempo" precision="0" referenceCount="1" scale="0" source-column-ref="COL16" sourceDataTypeName="TIME" type="92" userDefinedTypeUUID="10d6960f-169d-47c2-860a-37341342b1d5" >
+     <remarks></remarks>
+    </column>
+    </folder>
+    <folder id="FOLTAB393" populated="true" name="Exported Keys" physicalName="Exported Keys" type="3">
+    </folder>
+    <folder id="FOLTAB392" populated="true" name="Imported Keys" physicalName="Imported Keys" type="2">
+    </folder>
+    <folder id="FOLTAB394" populated="true" name="Indices" physicalName="Indices" type="4">
+    <index id="IDX42" populated="true" UUID="ff0e7e8d-5682-4917-bcea-8f7a6a1594b8" clustered="false" name="tempo_PK" physicalName="tempo_PK" primaryKeyIndex="true" qualifier="" unique="true" >
+     <index-column id="IDC43" populated="true" UUID="408006a3-7d02-42f0-aa30-18d4bc06ade0" ascendingOrDescending="UNSPECIFIED" column-ref="COL40" name="TEM_codigo" physicalName="TEM_codigo" />
+    </index>
+   </folder>
+  </table>
+  <relationships>
+  </relationships>
+ </target-database>
+ <ddl-generator type="ca.sqlpower.architect.ddl.GenericDDLGenerator" allow-connection="true"> </ddl-generator>
+ <liquibase-settings useSeparateChangeSets="false" generateId="false" idStart="1"/>
+ <create-kettle-job-settings filePath="" jobName="" schemaName="" kettleJoinType="0" savingToFile="true" />
+ <play-pen zoom="1.0" viewportX="0" viewportY="0" relationship-style="rectilinear" names-displayLogicalNames="true" showPrimaryTag="true" showForeignTag="true" showAlternateTag="true" columnVisibility="ALL" relationshipLabelVisibility="true">
+  <table-pane table-ref="TAB28" x="149" y="138" bgColor="0xf0f0f0" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB34" x="332" y="292" bgColor="0xf0f0f0" fgColor="0x000000" rounded="false" dashed="false"/>
+  <table-pane table-ref="TAB39" x="550" y="171" bgColor="0xf0f0f0" fgColor="0x000000" rounded="false" dashed="false"/>
+ </play-pen>
+ <critic-manager>
+  <critic-grouping platformType="Generic" enabled="true">
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.PrimaryKeyCritic" severity="ERROR"/>
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.RelationshipMappingTypeCritic" severity="ERROR"/>
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.EmptyRelationshipCritic" severity="ERROR"/>
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.AlphaNumericNameCritic" severity="ERROR"/>
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.AlphaNumericSequenceNameCritic" severity="ERROR"/>
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.SetDefaultOnColumnWithNoDefaultCritic" severity="ERROR"/>
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.SetNullOnNonNullableColumnCritic" severity="ERROR"/>
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.DuplicateNameCritic" severity="ERROR"/>
+  </critic-grouping>
+  <critic-grouping platformType="DB2" enabled="true">
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.DB2UnsupportedFeaturesCritic" severity="ERROR"/>
+  </critic-grouping>
+  <critic-grouping platformType="H2" enabled="true">
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.H2UnsupportedFeaturesCritic" severity="ERROR"/>
+  </critic-grouping>
+  <critic-grouping platformType="HSQLDB" enabled="true">
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.HSQLDBUnsupportedFeaturesCritic" severity="ERROR"/>
+  </critic-grouping>
+  <critic-grouping platformType="MySQL" enabled="true">
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.MySQLCommentCritic" severity="ERROR"/>
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.MySQLReservedWordsCritic" severity="ERROR"/>
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.MySQLUnsupportedFeaturesCritic" severity="ERROR"/>
+  </critic-grouping>
+  <critic-grouping platformType="Oracle" enabled="true">
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.OraclePhysicalNameCritic" severity="ERROR"/>
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.OracleReservedWordsCritic" severity="ERROR"/>
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.OracleUnsupportedFeaturesCritic" severity="ERROR"/>
+  </critic-grouping>
+  <critic-grouping platformType="PostgreSQL" enabled="true">
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.PostgreSQLReservedWordsCritic" severity="ERROR"/>
+  </critic-grouping>
+  <critic-grouping platformType="SQL Server" enabled="true">
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.SQLServerUnsupportedFeaturesCritic" severity="ERROR"/>
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.SQLServerReservedWordsCritic" severity="ERROR"/>
+  </critic-grouping>
+  <critic-grouping platformType="SQL Server 2000" enabled="true">
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.SQLServer2000UnsupportedFeaturesCritic" severity="ERROR"/>
+  </critic-grouping>
+  <critic-grouping platformType="SQL Server 2005" enabled="true">
+   <critic-settings class="ca.sqlpower.architect.ddl.critic.impl.SQLServer2005UnsupportedFeaturesCritic" severity="ERROR"/>
+  </critic-grouping>
+ </critic-manager>
+ <profiles topNCount="10">
+  </profiles>
+  <olap>
+  </olap>
+  <olap-gui>
+  </olap-gui>
+</architect-project>
