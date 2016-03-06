@@ -17,9 +17,11 @@ public class RelatorioDao {
 
     private Connection conn;
     public ResultSet rsGeral;
-    public ResultSet rsCat;
+    public ResultSet rsTipoCat;
     public ResultSet rsCate;
-
+    public ResultSet rsGeralFM;
+    public ResultSet rsGeralPrimeiros;
+    public ResultSet rsPosi;
     public RelatorioDao() {
         this.conn = new Conexao().getConnection();
     }
@@ -28,15 +30,15 @@ public class RelatorioDao {
         return conn;
     }
 
-    public ResultSet conexao() {
+    public ResultSet selectTipCat() {
         ResultSet rs = null;
         if (conn != null) {
             System.out.println("Conexão Java-MySQL efetuada com sucesso!\n");
             try {
                 Statement stmt = conn.createStatement();
                 String query = "select distinct(ATL_categoria) from atleta order by ATL_categoria";
-                rsCat = stmt.executeQuery(query);
-                return rsCat;
+                rsTipoCat = stmt.executeQuery(query);
+                return rsTipoCat;
                 //conn.close();
             } catch (Exception e) {
             }
@@ -46,40 +48,117 @@ public class RelatorioDao {
         return rs;
     }
 
-    public void conexao2() {
+    public void selectGeral() {
         ResultSet rs = null;
         if (conn != null) {
             System.out.println("Conexão Java-MySQL efetuada com sucesso!\n");
             try {
                 Statement stmt = conn.createStatement();
-                String queryGeral = "select TEM_id as Colocação, ATL_numero, ATL_nome, ATL_categoria, TEM_tempo as Tempo from numero, tempo, atleta where NUM_chave = TEM_id and NUM_numero = ATL_numero";
+                String queryGeral = "select TEM_codigo as Colocação, ATL_numero, ATL_nome, ATL_categoria, TEM_tempo as Tempo from numero, tempo, atleta where NUM_codigo = TEM_codigo and NUM_numero = ATL_numero";
                 rsGeral = stmt.executeQuery(queryGeral);
-               
                 //conn.close();
             } catch (Exception e) {
             }
         } else {
             System.out.println("Problemas!");
         }
-        
+
     }
 
-    public void conexaoCat(String cat) {
+    public void SelectCat(String cat) {
         ResultSet rs = null;
         if (conn != null) {
             System.out.println("Conexão Java-MySQL efetuada com sucesso!\n");
             try {
                 Statement stmt = conn.createStatement();
-                String query = "select TEM_id as ColocaçãoGeral, ATL_numero, ATL_nome, ATL_categoria, TEM_id as Tempo from numero, tempo, atleta "
-                        + "where NUM_chave = TEM_id and NUM_numero = ATL_numero and ATL_categoria like \"" + cat + "\"";
+                String query = "select TEM_codigo as ColocaçãoGeral, ATL_numero, ATL_nome, ATL_categoria, TEM_tempo as Tempo from numero, tempo, atleta "
+                        + "where NUM_codigo = TEM_codigo and NUM_numero = ATL_numero and ATL_categoria like \"" + cat + "\"";
                 rsCate = stmt.executeQuery(query);
-               
+
                 //conn.close();
             } catch (Exception e) {
             }
         } else {
             System.out.println("Problemas!");
         }
-        
     }
+
+    //muitos teste encontrar um jeito mais facil
+    public void SelectPosi(char cat) {
+        ResultSet rs = null;
+        if (conn != null) {
+            System.out.println("Conexão Java-MySQL efetuada com sucesso!\n");
+            try {
+                if (cat == 'F') {
+                    Statement stmt = conn.createStatement();
+                    String query = "select @rownum:=@rownum+1 AS classificação, ATL_numero from numero, tempo, atleta, (SELECT @rownum:=0) r "
+                            + "where NUM_codigo = TEM_codigo and NUM_numero = ATL_numero and ATL_categoria like \"" + cat + "%\" ";
+                    rsPosi = stmt.executeQuery(query);
+                }
+
+                if (cat == 'M') {
+                    Statement stmt = conn.createStatement();
+                    String query = "select @rownum:=@rownum+1 AS classificação, ATL_numero from numero, tempo, atleta, (SELECT @rownum:=0) r "
+                            + "where NUM_codigo = TEM_codigo and NUM_numero = ATL_numero and ATL_categoria like \"" + cat + "%\" ";
+                    rsPosi = stmt.executeQuery(query);
+                }
+
+                //conn.close();
+            } catch (Exception e) {
+            }
+        } else {
+            System.out.println("Problemas!");
+        }
+    }
+
+    public void SelectGeral_F_M(String cat) {
+        ResultSet rs = null;
+        if (conn != null) {
+            System.out.println("Conexão Java-MySQL efetuada com sucesso!\n");
+            try {
+                if (cat.equals("GERAL F")) {
+                    Statement stmt = conn.createStatement();
+                    String query = "select @rownum:=@rownum+1 AS classificação, ATL_numero, ATL_nome, ATL_categoria, TEM_tempo as Tempo "
+                            + "from numero, tempo, atleta, (SELECT @rownum:=0) r "
+                            + "where NUM_codigo = TEM_codigo and NUM_numero = ATL_numero and ATL_categoria like \"F%\"";
+                    rsGeralFM = stmt.executeQuery(query);
+                } else if (cat.equals("GERAL M")) {
+                    Statement stmt = conn.createStatement();
+                    String query = "select @rownum:=@rownum+1 AS classificação, ATL_numero, ATL_nome, ATL_categoria, TEM_tempo as Tempo "
+                            + "from numero, tempo, atleta, (SELECT @rownum:=0) r "
+                            + "where NUM_codigo = TEM_codigo and NUM_numero = ATL_numero and ATL_categoria like \"M%\"";
+                    rsGeralFM = stmt.executeQuery(query);
+                }
+                //conn.close();
+            } catch (Exception e) {
+            }
+        } else {
+            System.out.println("Problemas!");
+        }
+    }
+
+    public void SelectGeralPrimeiros(char cat) {
+        ResultSet rs = null;
+        if (conn != null) {
+            System.out.println("Conexão Java-MySQL efetuada com sucesso!\n");
+            try {
+                if (cat == 'F') {
+                    Statement stmt = conn.createStatement();
+                    String query = "select  ATL_numero from numero, tempo, atleta \n"
+                            + "where NUM_codigo = TEM_codigo and NUM_numero = ATL_numero and ATL_categoria like \"F%\" limit 3";
+                    rsGeralPrimeiros = stmt.executeQuery(query);
+                } else if (cat == 'M') {
+                    Statement stmt = conn.createStatement();
+                    String query = "select  ATL_numero from numero, tempo, atleta \n"
+                            + "where NUM_codigo = TEM_codigo and NUM_numero = ATL_numero and ATL_categoria like \"M%\" limit 3";
+                    rsGeralPrimeiros = stmt.executeQuery(query);
+                }
+                //conn.close();
+            } catch (Exception e) {
+            }
+        } else {
+            System.out.println("Problemas!");
+        }
+    }
+
 }
