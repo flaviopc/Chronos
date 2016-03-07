@@ -9,9 +9,11 @@ import db.RelatorioDao;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
+import model.Posicao;
 
 /**
  *
@@ -26,28 +28,30 @@ public class Relatorio extends javax.swing.JFrame {
 
     public Relatorio() {
         initComponents();
-        RelatorioDao conn = new RelatorioDao();        
-        conn.conexao();
+        RelatorioDao conn = new RelatorioDao();
+        conn.selectTipCat();
         comboCat.removeAllItems();
         comboCat.addItem("GERAL");
+        comboCat.addItem("GERAL F");
+        comboCat.addItem("GERAL M");
         //dados combo box
         try {
-            while (conn.rsCat.next()) {
-                String cat = conn.rsCat.getString("ATL_categoria");
+            while (conn.rsTipoCat.next()) {
+                String cat = conn.rsTipoCat.getString("ATL_categoria");
                 comboCat.addItem(cat);
             }
         } catch (SQLException ex) {
             Logger.getLogger(Relatorio.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println(comboCat.getSelectedItem());
 
         comboCat.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 linha = 0;
                 DefaultTableModel dtm = (DefaultTableModel) tb_relatorio.getModel();
                 dtm.setNumRows(0);
+
                 if (comboCat.getSelectedItem().toString().equals("GERAL")) {
-                    conn.conexao2();
+                    conn.selectGeral();
                     try {
                         while (conn.rsGeral.next()) {
                             tb_relatorio.getColumnModel().getColumn(3).setHeaderValue("Categoria");
@@ -71,7 +75,7 @@ public class Relatorio extends javax.swing.JFrame {
                             tb_relatorio.setValueAt(nome, linha, 2);
                             tb_relatorio.setValueAt(categoria, linha, 3);
                             tb_relatorio.setValueAt(tempo, linha, 4);
-                           
+
                             double veloTotal = veloMin / 0.5;
                             tb_relatorio.setValueAt(veloTotal, linha++, 5);
 
@@ -80,56 +84,133 @@ public class Relatorio extends javax.swing.JFrame {
                         Logger.getLogger(Relatorio.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
-                System.out.println(comboCat.getSelectedItem().toString());
-                tb_relatorio.removeAll();
-                int cont = 1;
-                conn.conexaoCat(comboCat.getSelectedItem().toString());
 
-                try {
-                    while (conn.rsCate.next()) {
-                        tb_relatorio.getColumnModel().getColumn(3).setHeaderValue("Classificação Geral");
-                        if (!conn.rsCate.getString("ColocaçãoGeral").equals("1") && !conn.rsCate.getString("ColocaçãoGeral").equals("2") && !conn.rsCate.getString("ColocaçãoGeral").equals("3")) {
+                if (comboCat.getSelectedItem().toString().equals("GERAL F") || comboCat.getSelectedItem().toString().equals("GERAL M")) {
+                    tb_relatorio.removeAll();
+                    conn.SelectGeral_F_M(comboCat.getSelectedItem().toString());
+
+                    try {
+                        while (conn.rsGeralFM.next()) {
+                            tb_relatorio.getColumnModel().getColumn(3).setHeaderValue("Categoria");
                             addLinha();
 
-                            String codigo = conn.rsCate.getString("ColocaçãoGeral");
-                            String numero = conn.rsCate.getString("ATL_numero");
-                            String nome = conn.rsCate.getString("ATL_nome");
-                            String categoria = conn.rsCate.getString("ATL_categoria");
-                            String tempo = conn.rsCate.getString("Tempo");
-                            System.out.println(codigo);
-                            System.out.println(numero);
-                            System.out.println(nome);
-                            System.out.println(categoria);
-                            System.out.println(tempo);
+                            String codigo = conn.rsGeralFM.getString("classificação");
+                            String numero = conn.rsGeralFM.getString("ATL_numero");
+                            String nome = conn.rsGeralFM.getString("ATL_nome");
+                            String categoria = conn.rsGeralFM.getString("ATL_categoria");
+                            String tempo = conn.rsGeralFM.getString("Tempo");
 
-                            String array[] = new String[2];
-                            array = tempo.split(":");
-                            int velo[] = new int[2];
-                            velo[0] = Integer.parseInt(array[0]);
-                            velo[1] = Integer.parseInt(array[1]);
-                            double veloMin = (velo[0] * 60) + velo[1];
-
-                            tb_relatorio.setValueAt(cont, linha, 0);
+                            // String array[] = new String[2];
+                            // array = tempo.split(":");
+                            // int velo[] = new int[2];
+                            // velo[0] = Integer.parseInt(array[0]);
+                            // velo[1] = Integer.parseInt(array[1]);
+                            // double veloMin = (velo[0] * 60) + velo[1];
+                            tb_relatorio.setValueAt(codigo, linha, 0);
                             tb_relatorio.setValueAt(numero, linha, 1);
                             tb_relatorio.setValueAt(nome, linha, 2);
-                            tb_relatorio.setValueAt(codigo, linha, 3);
-                            tb_relatorio.setValueAt(tempo, linha, 4);
+                            tb_relatorio.setValueAt(categoria, linha, 3);
+                            tb_relatorio.setValueAt(tempo, linha++, 4);
 
-                            double veloTotal = veloMin / 5;
-                            tb_relatorio.setValueAt(veloTotal, linha++, 5);
-                            cont++;
+                            // double veloTotal = veloMin / 5;
+                            //tb_relatorio.setValueAt(veloTotal, linha++, 5);
                         }
-
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Relatorio.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                } catch (SQLException ex) {
-                    Logger.getLogger(Relatorio.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                if (!(comboCat.getSelectedItem().toString().equals("GERAL") || comboCat.getSelectedItem().toString().equals("GERAL F") || comboCat.getSelectedItem().toString().equals("GERAL M"))) {
+                    tb_relatorio.removeAll();
+                    tb_relatorio.getColumnModel().getColumn(3).setHeaderValue("Classificação Geral");
+                    char cat = comboCat.getSelectedItem().toString().charAt(0);
+                    conn.SelectGeralPrimeiros(cat);
+                    int[] primeiros = new int[3];
+                    int n = 0;
 
+                    //pego os tres primeiros colocados da categoria Masculino ou feminino
+                    try {
+                        while (conn.rsGeralPrimeiros.next()) {
+                            primeiros[n] = Integer.parseInt(conn.rsGeralPrimeiros.getString("ATL_numero"));
+                            System.out.println(primeiros[n]);
+                            n++;
+
+                        }
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Relatorio.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                    int cont = 1;
+                    conn.SelectPosi(cat);
+                    //Arrumar isso depois;
+                    Posicao[] posicoes = new Posicao[400];
+                    n = 0;
+                    try {
+                        while (conn.rsPosi.next()) {
+                            String clas = conn.rsPosi.getString("classificação");
+                            String num = conn.rsPosi.getString("ATL_numero");
+                            posicoes[n] = new Posicao(num, clas);
+                            n++;
+                        }
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Relatorio.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    conn.SelectCat(comboCat.getSelectedItem().toString());
+                    try {
+                        while (conn.rsCate.next()) {
+
+                            if (!conn.rsCate.getString("ATL_numero").equals(String.valueOf(primeiros[0]))
+                                    && !conn.rsCate.getString("ATL_numero").equals(String.valueOf(primeiros[1]))
+                                    && !conn.rsCate.getString("ATL_numero").equals(String.valueOf(primeiros[2]))) {
+
+                                addLinha();
+                                boolean sair = true;
+                                String codigo = null;
+                                int ind =0;
+                                while (sair) {
+                                    String num = conn.rsCate.getString("ATL_numero");
+                                    if (num.equals(posicoes[ind].getNumero())) {
+                                        codigo = posicoes[ind].getPosicao();
+                                        sair = false;
+                                    }
+                                    ind++;
+                                }
+
+                                String numero = conn.rsCate.getString("ATL_numero");
+                                String nome = conn.rsCate.getString("ATL_nome");
+                                String categoria = conn.rsCate.getString("ATL_categoria");
+                                String tempo = conn.rsCate.getString("Tempo");
+
+                                String array[] = new String[2];
+                                array = tempo.split(":");
+                                int velo[] = new int[2];
+                                velo[0] = Integer.parseInt(array[0]);
+                                velo[1] = Integer.parseInt(array[1]);
+                                double veloMin = (velo[0] * 60) + velo[1];
+
+                                tb_relatorio.setValueAt(cont, linha, 0);
+                                tb_relatorio.setValueAt(numero, linha, 1);
+                                tb_relatorio.setValueAt(nome, linha, 2);
+                                tb_relatorio.setValueAt(codigo, linha, 3);
+                                tb_relatorio.setValueAt(tempo, linha, 4);
+
+                                double veloTotal = veloMin / 5;
+                                tb_relatorio.setValueAt(veloTotal, linha++, 5);
+                                cont++;
+                            }
+
+                        }
+                    } catch (SQLException ex) {
+                        Logger.getLogger(Relatorio.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                }
             }
-        });
+        }
+        );
 
         //dados tabela geral 
-        conn.conexao2();
+        conn.selectGeral();
+
         try {
             while (conn.rsGeral.next()) {
 
@@ -153,7 +234,7 @@ public class Relatorio extends javax.swing.JFrame {
                 tb_relatorio.setValueAt(nome, linha, 2);
                 tb_relatorio.setValueAt(categoria, linha, 3);
                 tb_relatorio.setValueAt(tempo, linha, 4);
-                System.out.println(veloMin);
+
                 double veloTotal = veloMin / 5;
                 tb_relatorio.setValueAt(veloTotal, linha++, 5);
 
@@ -180,7 +261,7 @@ public class Relatorio extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tb_relatorio = new javax.swing.JTable();
-        comboCat = new javax.swing.JComboBox<String>();
+        comboCat = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -189,7 +270,7 @@ public class Relatorio extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Colocação", "Número", "Nome", "CAT", "Tempo", "M/KM"
+                "Colocação", "Número", "Nome", "Categoria", "Tempo", "M/KM"
             }
         ) {
             Class[] types = new Class [] {
@@ -220,7 +301,7 @@ public class Relatorio extends javax.swing.JFrame {
             tb_relatorio.getColumnModel().getColumn(5).setResizable(false);
         }
 
-        comboCat.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboCat.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
