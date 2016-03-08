@@ -345,19 +345,6 @@ public class Relatorio extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) throws SQLException {
-
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Relatorio().setVisible(true);
-            }
-        });
-
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> comboCat;
     private javax.swing.JScrollPane jScrollPane1;
