@@ -13,12 +13,16 @@ import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollBar;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
@@ -66,6 +70,9 @@ public class Principal extends javax.swing.JFrame {
         tbTempo.setDefaultRenderer(Object.class, new CellRenderer());
 
         capturaTecla();
+        
+        //Menu suspenso ao clicar com o botÃ£o direito
+        tbTempo.addMouseListener(new MenuSuspenso());
     }
 
     /**
@@ -498,6 +505,41 @@ public class Principal extends javax.swing.JFrame {
             return super.getTableCellRendererComponent(table, value, isSelected,
                     hasFocus, row, column);
         }
+    }
+    
+    /**
+     * Classe para gerar o menu ao clicar na tabela com o botÃ£o direito
+     * Os nÃºmeros das linhas selecionadas sÃ£o apagadas
+     */
+    private class MenuSuspenso extends MouseAdapter{
+      @Override
+      public void mouseClicked(MouseEvent me) {
+                //Verificando se o botÃ£o direito do mouse foi clicado
+                if ((me.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
+                    JPopupMenu menu = new JPopupMenu();
+                    JMenuItem item = new JMenuItem("Apagar Atletas");
+                    menu.add(item);
+                    item.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent ae) {
+                            int numbers[] = tbTempo.getSelectedRows();                            
+                            for (int i = 0; i < numbers.length; i++) {                                                                                                
+                                tbTempo.setValueAt("", numbers[i], 2);
+                                corredor--;
+                            }    
+                            try {
+                                new NumeroDao().deletaNumAtletas(numbers);
+                            } catch (ClassNotFoundException ex) {
+                                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                            } catch (SQLException ex) {
+                                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            
+                        }
+                    });
+                    menu.show(tbTempo, me.getX(), me.getY());
+                }
+            }  
     }
 
     /**

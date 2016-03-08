@@ -46,14 +46,57 @@ public class NumeroDao {
         return Numero;
     }
 
-    //Insere numero do atleta pela ordem de chegada 
+    public void deletaNumAtletas(int atletas[]) {
+        if (conn != null) {
+            try {
+                if (atletas.length > 1) {
+                    String sql = "delete from numero where NUM_codigo > ?";
+                    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                        ps.setInt(1, atletas[0]);
+                        ps.execute();
+                        atualizarNumeros();
+                    }
+                } else {
+                    String sql = "delete from numero where NUM_codigo=?";
+                    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                        ps.setInt(1, atletas[0] + 1);
+                        ps.execute();
+                        atualizarNumeros();
+                    }
+                }
+            } catch (SQLException e) {
 
+            }
+        } else {
+            System.out.println("Você precisa criar uma conexão com o banco de dados!");
+        }
+    }
+
+    public void atualizarNumeros() {
+        if (conn != null) {
+            try {
+                String sql = "SET @count = 0";
+                try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                    ps.execute();
+                }
+                sql = "UPDATE numero SET NUM_codigo = @count:= @count + 1";
+                try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                    ps.execute();
+                }
+            } catch (SQLException e) {
+
+            }
+        } else {
+            System.out.println("Você precisa criar uma conexão com o banco de dados!");
+        }
+    }
+
+    //Insere numero do atleta pela ordem de chegada 
     public boolean insereN(String numero) throws SQLException {
         boolean sucesso = true;
         if (conn != null) {
             try {
-                String sql = "insert into numero (NUM_numero) values (?)";
-
+                String sql = "insert into numero (NUM_numero) values (?)";                
                 try (PreparedStatement ps = conn.prepareStatement(sql)) {
                     ps.setString(1, numero);
                     return ps.execute();
@@ -62,6 +105,7 @@ public class NumeroDao {
             } catch (SQLException e) {
                 System.out.println("Informações sobre o erro: " + e.getMessage());
             } finally {
+                atualizarNumeros();
                 conn.close();
             }
         } else {
