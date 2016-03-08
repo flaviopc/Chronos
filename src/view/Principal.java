@@ -509,12 +509,12 @@ public class Principal extends javax.swing.JFrame {
     
     /**
      * Classe para gerar o menu ao clicar na tabela com o botÃ£o direito
-     * Os nÃºmeros das linhas selecionadas sÃ£o apagadas
+     * Os números das linhas selecionadas são apagadas
      */
     private class MenuSuspenso extends MouseAdapter{
       @Override
       public void mouseClicked(MouseEvent me) {
-                //Verificando se o botÃ£o direito do mouse foi clicado
+                //Verificando se o botão direito do mouse foi clicado
                 if ((me.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
                     JPopupMenu menu = new JPopupMenu();
                     JMenuItem item = new JMenuItem("Apagar Atletas");
