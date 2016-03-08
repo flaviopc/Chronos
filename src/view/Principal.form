@@ -39,12 +39,12 @@
             <Property name="text" type="java.lang.String" value="Resultados"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
+            <MenuItem class="javax.swing.JMenuItem" name="resultadoGeral">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Resultado Geral"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem1ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="resultadoGeralActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>

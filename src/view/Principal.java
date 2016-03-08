@@ -5,6 +5,7 @@
  */
 package view;
 
+import db.NumeroDao;
 import db.TempoDao;
 import java.awt.Component;
 import java.awt.KeyEventDispatcher;
@@ -30,10 +31,11 @@ import model.Tempo;
 
 /**
  * Classe principal da aplicação
+ *
  * @author Flavio
  */
 public class Principal extends javax.swing.JFrame {
-    
+
     //variáveis do cronometro
     private Timer timer;
     private int segundoAtual = 0;
@@ -42,8 +44,8 @@ public class Principal extends javax.swing.JFrame {
     private final int velocidade = 1000;
     boolean iniciou = false;
     Cronometro cronometro;
-    
-    Tempo tempo;    
+
+    Tempo tempo;
     int numero = 1;
     int linha = 0;
     int corredor = 0;
@@ -55,8 +57,8 @@ public class Principal extends javax.swing.JFrame {
         tempo = new Tempo();
         //cronometro = new Cronometro();
 
-        TempoDao t = new TempoDao();
-        numeroList = t.selectN();
+        NumeroDao numreroDao = new NumeroDao();
+        numeroList = numreroDao.select();
         lisAtletas.setModel(CarregarNumero());
 
         tbTempo.setRowHeight(20);
@@ -92,7 +94,7 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        resultadoGeral = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
 
         jMenuItem5.setText("jMenuItem5");
@@ -225,13 +227,13 @@ public class Principal extends javax.swing.JFrame {
 
         jMenu2.setText("Resultados");
 
-        jMenuItem1.setText("Resultado Geral");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        resultadoGeral.setText("Resultado Geral");
+        resultadoGeral.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
+                resultadoGeralActionPerformed(evt);
             }
         });
-        jMenu2.add(jMenuItem1);
+        jMenu2.add(resultadoGeral);
 
         jMenuBar1.add(jMenu2);
 
@@ -274,15 +276,15 @@ public class Principal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void resultadoGeralActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resultadoGeralActionPerformed
         new Relatorio().setVisible(true);
 
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_resultadoGeralActionPerformed
 
     private void btIniciarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btIniciarActionPerformed
         // TODO add your handling code here:
         if (!iniciou) {
-            iniciarContagem();            
+            iniciarContagem();
             txtAddNum.setEnabled(true);
             btIniciar.setEnabled(false);
             iniciou = true;
@@ -308,8 +310,8 @@ public class Principal extends javax.swing.JFrame {
 
     private void txtAddNumKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtAddNumKeyTyped
         //Aceita somente números
-        String somenteNumeros="0123456789";
-        if(!somenteNumeros.contains(String.valueOf(evt.getKeyChar()))){            
+        String somenteNumeros = "0123456789";
+        if (!somenteNumeros.contains(String.valueOf(evt.getKeyChar()))) {
             evt.consume();
         }
     }//GEN-LAST:event_txtAddNumKeyTyped
@@ -332,18 +334,19 @@ public class Principal extends javax.swing.JFrame {
                         //Captura a teclar Enter
                         if (e.getID() == e.KEY_RELEASED && e.getKeyCode() == KeyEvent.VK_ENTER) {
                             try {
-                                if(linha > corredor){
-                                    if(inserirAtleta(txtAddNum.getText()))                                
-                                        txtAddNum.setText("");                                   
+                                if (linha > corredor) {
+                                    if (inserirAtleta(txtAddNum.getText())) {
+                                        txtAddNum.setText("");
+                                    }
                                 }
-                                    
+
                             } catch (ClassNotFoundException ex) {
                                 Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
                             } catch (SQLException ex) {
                                 Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         }
-                        
+
                         //Captura a tecla M
                         if (e.getID() == e.KEY_RELEASED && e.getKeyCode() == KeyEvent.VK_M && iniciou) {
                             tempo.setTempo(getLbCronometro());
@@ -358,10 +361,10 @@ public class Principal extends javax.swing.JFrame {
                             } catch (SQLException ex) {
                                 Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
                             }
-                            
+
                             addLinha();
                             moverScroll();
-                            
+
                             tbTempo.setValueAt(tempo.getCodigo(), linha, 0);
                             tbTempo.setValueAt(tempo.getTempo(), linha++, 1);
 
@@ -378,12 +381,12 @@ public class Principal extends javax.swing.JFrame {
         return lbCronometro.getText();
     }
 
-    
     /**
-     * Move o scroll para o final da tabela a medida que novas linhas são inseridas    
+     * Move o scroll para o final da tabela a medida que novas linhas são
+     * inseridas
      */
-    public void moverScroll(){
-            SwingUtilities.invokeLater(new Runnable() {
+    public void moverScroll() {
+        SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                 JScrollBar bar = scrollTabela.getVerticalScrollBar();
@@ -391,14 +394,14 @@ public class Principal extends javax.swing.JFrame {
             }
         });
     }
-    
+
     /**
-     * Adiciona uma nova linha vazia na tabela 
+     * Adiciona uma nova linha vazia na tabela
      */
     public void addLinha() {
         DefaultTableModel dtm = (DefaultTableModel) tbTempo.getModel();
         String[] linha = {""};
-        dtm.addRow(linha);                    
+        dtm.addRow(linha);
     }
 
     public void carregarTabela() throws SQLException {
@@ -423,28 +426,33 @@ public class Principal extends javax.swing.JFrame {
         }
 
     }
-    
+
     public boolean inserirAtleta(String n) throws ClassNotFoundException, SQLException {
-        boolean r = false;      
+        boolean r = false;
 
         for (int i = 0; i < lisAtletas.getModel().getSize(); i++) {
-            if (n.equals(lisAtletas.getModel().getElementAt(i))) {
-                TempoDao temp = new TempoDao();
-                temp.insereN(n);
-                tbTempo.setValueAt(n, corredor++, 2);
-                numeroList.remove(i);
-                for (int a = 0; a < numeroList.size(); a++) {
-                    System.out.println(numeroList.get(a).getNumero());
+            if (!n.equals("0")) {
+                if (n.equals(lisAtletas.getModel().getElementAt(i))) {
+                    NumeroDao numeroDao = new NumeroDao();
+                    numeroDao.insereN(n);
+                    tbTempo.setValueAt(n, corredor++, 2);
+                    numeroList.remove(i);
+                    for (int a = 0; a < numeroList.size(); a++) {
+                        System.out.println(numeroList.get(a).getNumero());
+                    }
+                    lisAtletas.setModel(CarregarNumero());
+                    return r = true;
                 }
-                lisAtletas.setModel(CarregarNumero());
+            } else {
+                tbTempo.setValueAt("0000", corredor++, 2);
                 return r = true;
             }
         }
 
         return false;
     }
-    
-     /**
+
+    /**
      * Inicia a Contagem do cronometro
      */
     public void iniciarContagem() {
@@ -473,8 +481,8 @@ public class Principal extends javax.swing.JFrame {
         timer = new Timer(velocidade, action);
         timer.start();
     }
-    
-     /**
+
+    /**
      * Classe para personalizar a tabela
      */
     private class CellRenderer extends DefaultTableCellRenderer {
@@ -504,13 +512,7 @@ public class Principal extends javax.swing.JFrame {
 
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-            /*
-             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-             if ("Nimbus".equals(info.getName())) {
-             javax.swing.UIManager.setLookAndFeel(info.getClassName());
-             break;
-             }
-             }*/
+
         } catch (ClassNotFoundException ex) {
             java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
@@ -544,7 +546,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
@@ -553,6 +554,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lbCronometro;
     private javax.swing.JList lisAtletas;
+    private javax.swing.JMenuItem resultadoGeral;
     private javax.swing.JScrollPane scrollTabela;
     private javax.swing.JTable tbTempo;
     private javax.swing.JTextField txtAddNum;
