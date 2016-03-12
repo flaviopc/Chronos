@@ -8,12 +8,15 @@ package view;
 import db.RelatorioDao;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JTable.PrintMode;
 import javax.swing.table.DefaultTableModel;
 import model.Posicao;
 
@@ -29,9 +32,10 @@ public class Relatorio extends javax.swing.JFrame {
     int linha = 0;
     int KM = 5;
     DecimalFormat formatter = new DecimalFormat("#0.00");
-
+    
     public Relatorio() {
-        initComponents();
+        initComponents();        
+        tb_relatorio.setRowHeight(20);    
         RelatorioDao conn = new RelatorioDao();
         conn.selectTipCat();
         comboCat.removeAllItems();
@@ -258,7 +262,7 @@ public class Relatorio extends javax.swing.JFrame {
             Logger.getLogger(Relatorio.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+       
     public void addLinha() {
         DefaultTableModel dtm = (DefaultTableModel) tb_relatorio.getModel();
         String[] linha = {""};
@@ -276,10 +280,15 @@ public class Relatorio extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tb_relatorio = new javax.swing.JTable();
-        comboCat = new javax.swing.JComboBox<>();
+        comboCat = new javax.swing.JComboBox<String>();
+        jLabel1 = new javax.swing.JLabel();
+        btImprimir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Relatório da Corrida");
+        setPreferredSize(new java.awt.Dimension(800, 500));
 
+        tb_relatorio.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         tb_relatorio.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -316,7 +325,16 @@ public class Relatorio extends javax.swing.JFrame {
             tb_relatorio.getColumnModel().getColumn(5).setResizable(false);
         }
 
-        comboCat.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboCat.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel1.setText("Selecione a Categoria");
+
+        btImprimir.setText("Imprimir");
+        btImprimir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btImprimirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -325,28 +343,50 @@ public class Relatorio extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 737, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(261, 261, 261)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(comboCat, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 227, Short.MAX_VALUE)
+                        .addComponent(btImprimir))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(335, 335, 335)
-                        .addComponent(comboCat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(83, Short.MAX_VALUE))
+                        .addContainerGap()
+                        .addComponent(jScrollPane1)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(94, Short.MAX_VALUE)
-                .addComponent(comboCat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(159, 159, 159))
+                .addGap(16, 16, 16)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel1)
+                    .addComponent(comboCat, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btImprimir))
+                .addGap(12, 12, 12)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btImprimirActionPerformed
+        // TODO add your handling code here:
+        PrinterJob job = PrinterJob.getPrinterJob();        
+        job.setPrintable(tb_relatorio.getPrintable(PrintMode.FIT_WIDTH, null, null));               
+        if (job.printDialog()) {
+            try {
+                job.print();
+            } catch (PrinterException ex) {
+                Logger.getLogger(Relatorio.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_btImprimirActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btImprimir;
     private javax.swing.JComboBox<String> comboCat;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tb_relatorio;
     // End of variables declaration//GEN-END:variables
