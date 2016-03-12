@@ -12,8 +12,6 @@ import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JTable.PrintMode;
@@ -30,9 +28,12 @@ public class Relatorio extends javax.swing.JFrame {
      * Creates new form Relatorio
      */
     int linha = 0;
-    int KM = 5;
-    DecimalFormat formatter = new DecimalFormat("#0.00");
+    int KM = 5;   
     
+
+    DecimalFormat formatter = new DecimalFormat("#0.000");
+
+
     public Relatorio() {
         initComponents();        
         tb_relatorio.setRowHeight(20);    
@@ -71,24 +72,14 @@ public class Relatorio extends javax.swing.JFrame {
                             String categoria = conn.rsGeral.getString("ATL_categoria");
                             String tempo = conn.rsGeral.getString("Tempo");
 
-                            String array[] = new String[3];
-                            array = tempo.split(":");
-                            int velo[] = new int[3];
-                            velo[0] = Integer.parseInt(array[0]);
-                            velo[1] = Integer.parseInt(array[1]);
-                            velo[2] = Integer.parseInt(array[2]);
-                            double veloMin = (velo[0] * 60) + velo[1];
-                            veloMin = (veloMin * 60) + velo[2];
-                            double veloTotal = veloMin / KM;
-                            veloTotal = veloTotal / 60;
+                            String tempoMedio = velo(tempo);
 
                             tb_relatorio.setValueAt(codigo, linha, 0);
                             tb_relatorio.setValueAt(numero, linha, 1);
                             tb_relatorio.setValueAt(nome, linha, 2);
                             tb_relatorio.setValueAt(categoria, linha, 3);
                             tb_relatorio.setValueAt(tempo, linha, 4);
-
-                            tb_relatorio.setValueAt(formatter.format(veloTotal), linha++, 5);
+                            tb_relatorio.setValueAt(tempoMedio, linha++, 5);
 
                         }
                     } catch (SQLException ex) {
@@ -111,24 +102,14 @@ public class Relatorio extends javax.swing.JFrame {
                             String categoria = conn.rsGeralFM.getString("ATL_categoria");
                             String tempo = conn.rsGeralFM.getString("Tempo");
 
-                            String array[] = new String[3];
-                            array = tempo.split(":");
-                            int velo[] = new int[3];
-                            velo[0] = Integer.parseInt(array[0]);
-                            velo[1] = Integer.parseInt(array[1]);
-                            velo[2] = Integer.parseInt(array[2]);
-                            double veloMin = (velo[0] * 60) + velo[1];
-                            veloMin = (veloMin * 60) + velo[2];
-                            double veloTotal = veloMin / KM;
-                            veloTotal = veloTotal / 60;
+                            String tempoMedio = velo(tempo);
 
                             tb_relatorio.setValueAt(codigo, linha, 0);
                             tb_relatorio.setValueAt(numero, linha, 1);
                             tb_relatorio.setValueAt(nome, linha, 2);
                             tb_relatorio.setValueAt(categoria, linha, 3);
                             tb_relatorio.setValueAt(tempo, linha, 4);
-                            tb_relatorio.setValueAt(formatter.format(veloTotal), linha++, 5);
-
+                            tb_relatorio.setValueAt(tempoMedio, linha++, 5);
                         }
                     } catch (SQLException ex) {
                         Logger.getLogger(Relatorio.class.getName()).log(Level.SEVERE, null, ex);
@@ -146,7 +127,7 @@ public class Relatorio extends javax.swing.JFrame {
                     try {
                         while (conn.rsGeralPrimeiros.next()) {
                             primeiros[n] = Integer.parseInt(conn.rsGeralPrimeiros.getString("ATL_numero"));
-                            System.out.println(primeiros[n]);
+                            //System.out.println(primeiros[n]);
                             n++;
 
                         }
@@ -195,23 +176,14 @@ public class Relatorio extends javax.swing.JFrame {
                                 String categoria = conn.rsCate.getString("ATL_categoria");
                                 String tempo = conn.rsCate.getString("Tempo");
 
-                                String array[] = new String[3];
-                                array = tempo.split(":");
-                                int velo[] = new int[3];
-                                velo[0] = Integer.parseInt(array[0]);
-                                velo[1] = Integer.parseInt(array[1]);
-                                velo[2] = Integer.parseInt(array[2]);
-                                double veloMin = (velo[0] * 60) + velo[1];
-                                veloMin = (veloMin * 60) + velo[2];
-                                double veloTotal = veloMin / KM;
-                                veloTotal = veloTotal / 60;
+                               String tempoMedio = velo(tempo);
 
                                 tb_relatorio.setValueAt(cont, linha, 0);
                                 tb_relatorio.setValueAt(numero, linha, 1);
                                 tb_relatorio.setValueAt(nome, linha, 2);
                                 tb_relatorio.setValueAt(codigo, linha, 3);
                                 tb_relatorio.setValueAt(tempo, linha, 4);
-                                tb_relatorio.setValueAt(formatter.format(veloTotal), linha++, 5);
+                                tb_relatorio.setValueAt(tempoMedio, linha++, 5);
                                 cont++;
                             }
 
@@ -239,30 +211,53 @@ public class Relatorio extends javax.swing.JFrame {
                 String categoria = conn.rsGeral.getString("ATL_categoria");
                 String tempo = conn.rsGeral.getString("Tempo");
 
-                String array[] = new String[3];
-                array = tempo.split(":");
-                int velo[] = new int[3];
-                velo[0] = Integer.parseInt(array[0]);
-                velo[1] = Integer.parseInt(array[1]);
-                velo[2] = Integer.parseInt(array[2]);
-                double veloMin = (velo[0] * 60) + velo[1];
-                veloMin = (veloMin * 60) + velo[2];
-                double veloTotal = veloMin / KM;
-                veloTotal = veloTotal / 60;
+                String tempoMedio = velo(tempo);
 
                 tb_relatorio.setValueAt(codigo, linha, 0);
                 tb_relatorio.setValueAt(numero, linha, 1);
                 tb_relatorio.setValueAt(nome, linha, 2);
                 tb_relatorio.setValueAt(categoria, linha, 3);
                 tb_relatorio.setValueAt(tempo, linha, 4);
-                tb_relatorio.setValueAt(formatter.format(veloTotal), linha++, 5);
+                tb_relatorio.setValueAt(tempoMedio, linha++, 5);
 
             }
         } catch (SQLException ex) {
             Logger.getLogger(Relatorio.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-       
+
+    //calcula o tempo medio gasto do atleta
+    public String velo(String temp) {
+
+        DecimalFormat formatter2 = new DecimalFormat("#00");
+        String array[] = new String[3];
+        char array2[] = new char[3];
+
+        array = temp.split(":");
+        int velo[] = new int[3];
+        velo[0] = Integer.parseInt(array[0]);
+        velo[1] = Integer.parseInt(array[1]);
+        velo[2] = Integer.parseInt(array[2]);
+        double veloMin = (velo[0] * 60) + velo[1];
+        double veloSec = (veloMin * 60) + velo[2];
+        double veloTotal = veloSec / 5;
+        veloTotal = veloTotal / 60;
+
+        String dec = String.valueOf(veloTotal);
+        System.out.println(dec);
+        array2[0] = dec.charAt(0);
+        array2[1] = dec.charAt(2);
+        array2[2] = dec.charAt(3);
+        dec = String.valueOf(array2[1]) + array2[2];
+
+        veloTotal = Double.parseDouble(dec);
+        veloTotal = (veloTotal * 60) / 100;
+        dec = formatter2.format(veloTotal);
+        dec = (array2[0] + ":" + dec);
+        return dec;
+    }
+
+
     public void addLinha() {
         DefaultTableModel dtm = (DefaultTableModel) tb_relatorio.getModel();
         String[] linha = {""};
@@ -286,7 +281,7 @@ public class Relatorio extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Relatório da Corrida");
-        setPreferredSize(new java.awt.Dimension(800, 500));
+        setResizable(false);
 
         tb_relatorio.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         tb_relatorio.setModel(new javax.swing.table.DefaultTableModel(

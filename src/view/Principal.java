@@ -108,6 +108,7 @@ public class Principal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("CHRONOS 0.1");
+        setResizable(false);
 
         tbTempo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         tbTempo.setModel(new javax.swing.table.DefaultTableModel(
@@ -293,6 +294,7 @@ public class Principal extends javax.swing.JFrame {
         if (!iniciou) {
             iniciarContagem();
             txtAddNum.setEnabled(true);
+            txtAddNum.grabFocus();
             btIniciar.setEnabled(false);
             iniciou = true;
         }
