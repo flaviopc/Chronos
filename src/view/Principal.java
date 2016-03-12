@@ -72,7 +72,8 @@ public class Principal extends javax.swing.JFrame {
         capturaTecla();
         
         //Menu suspenso ao clicar com o botÃ£o direito
-        tbTempo.addMouseListener(new MenuSuspenso());
+        //ainda não está pronto
+       // tbTempo.addMouseListener(new MenuSuspenso());
     }
 
     /**
@@ -218,6 +219,7 @@ public class Principal extends javax.swing.JFrame {
         jMenu1.setText("Arquivo");
 
         jMenuItem6.setText("Carregar Tempos");
+        jMenuItem6.setEnabled(false);
         jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem6ActionPerformed(evt);
@@ -226,6 +228,7 @@ public class Principal extends javax.swing.JFrame {
         jMenu1.add(jMenuItem6);
 
         jMenuItem4.setText("Carregar Atletas");
+        jMenuItem4.setEnabled(false);
         jMenu1.add(jMenuItem4);
 
         jMenuItem3.setText("Sair");
