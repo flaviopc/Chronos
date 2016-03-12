@@ -31,6 +31,7 @@ import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.Position;
 import model.Tempo;
 
 /**
@@ -70,10 +71,10 @@ public class Principal extends javax.swing.JFrame {
         tbTempo.setDefaultRenderer(Object.class, new CellRenderer());
 
         capturaTecla();
-        
+
         //Menu suspenso ao clicar com o botÃ£o direito
         //ainda não está pronto
-       // tbTempo.addMouseListener(new MenuSuspenso());
+        // tbTempo.addMouseListener(new MenuSuspenso());
     }
 
     /**
@@ -443,25 +444,33 @@ public class Principal extends javax.swing.JFrame {
         boolean r = false;
 
         for (int i = 0; i < lisAtletas.getModel().getSize(); i++) {
-            if (!n.equals("0")) {
-                if (n.equals(lisAtletas.getModel().getElementAt(i))) {
-                    NumeroDao numeroDao = new NumeroDao();
-                    numeroDao.insereN(n);
+
+            if (n.equals(lisAtletas.getModel().getElementAt(i))) {
+                int confirm = JOptionPane.showConfirmDialog(null, "Deseja inserir o numero do participante ?");
+                if (confirm == 0) {
+                    NumeroDao num = new NumeroDao();
+                    num.insereN(n);
                     tbTempo.setValueAt(n, corredor++, 2);
                     numeroList.remove(i);
-                    for (int a = 0; a < numeroList.size(); a++) {
-                        System.out.println(numeroList.get(a).getNumero());
-                    }
+                    /*for (int a = 0; a < numeroList.size(); a++) {
+                     System.out.println(numeroList.get(a).getNumero());
+                     }*/
                     lisAtletas.setModel(CarregarNumero());
-                    return r = true;
+                    return true;
                 }
-            } else {
-                tbTempo.setValueAt("0000", corredor++, 2);
-                return r = true;
+                return true;
             }
+
         }
 
         return false;
+    }
+
+    //Metodo pra filtragem dos numeros digitados na lista
+    public void pesquisarLista(String texto) {
+        int pos = lisAtletas.getNextMatch(texto, 0, Position.Bias.Forward);
+        lisAtletas.setSelectedIndex(pos);
+        lisAtletas.ensureIndexIsVisible(pos);
     }
 
     /**
@@ -511,43 +520,43 @@ public class Principal extends javax.swing.JFrame {
                     hasFocus, row, column);
         }
     }
-    
+
     /**
-     * Classe para gerar o menu ao clicar na tabela com o botÃ£o direito
-     * Os números das linhas selecionadas são apagadas
+     * Classe para gerar o menu ao clicar na tabela com o botÃ£o direito Os
+     * números das linhas selecionadas são apagadas
      */
-    private class MenuSuspenso extends MouseAdapter{
-      @Override
-      public void mouseClicked(MouseEvent me) {
-                //Verificando se o botão direito do mouse foi clicado
-                if ((me.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
-                    JPopupMenu menu = new JPopupMenu();
-                    JMenuItem item = new JMenuItem("Apagar Atletas");
-                    menu.add(item);
-                    item.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent ae) {
-                            int numbers[] = tbTempo.getSelectedRows();                            
-                            for (int i = 0; i < numbers.length; i++) {                                                                                                
-                                tbTempo.setValueAt("", numbers[i], 2);
-                                corredor--;
-                            }    
-                            try {
-                                new NumeroDao().deletaNumAtletas(numbers);
-                            } catch (ClassNotFoundException ex) {
-                                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                            } catch (SQLException ex) {
-                                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                            
+    private class MenuSuspenso extends MouseAdapter {
+
+        @Override
+        public void mouseClicked(MouseEvent me) {
+            //Verificando se o botão direito do mouse foi clicado
+            if ((me.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
+                JPopupMenu menu = new JPopupMenu();
+                JMenuItem item = new JMenuItem("Apagar Atletas");
+                menu.add(item);
+                item.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        int numbers[] = tbTempo.getSelectedRows();
+                        for (int i = 0; i < numbers.length; i++) {
+                            tbTempo.setValueAt("", numbers[i], 2);
+                            corredor--;
                         }
-                    });
-                    menu.show(tbTempo, me.getX(), me.getY());
-                }
-            }  
+                        try {
+                            new NumeroDao().deletaNumAtletas(numbers);
+                        } catch (ClassNotFoundException ex) {
+                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (SQLException ex) {
+                            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+
+                    }
+                });
+                menu.show(tbTempo, me.getX(), me.getY());
+            }
+        }
     }
 
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton btIniciar;
