@@ -247,7 +247,9 @@ public class Relatorio extends javax.swing.JFrame {
         System.out.println(dec);
         array2[0] = dec.charAt(0);
         array2[1] = dec.charAt(2);
-        array2[2] = dec.charAt(3);
+        array2[2] = '0';
+        if(dec.length()>3)
+            array2[2] = dec.charAt(3);
         dec = String.valueOf(array2[1]) + array2[2];
 
         veloTotal = Double.parseDouble(dec);
