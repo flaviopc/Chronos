@@ -28,7 +28,7 @@ public class Relatorio extends javax.swing.JFrame {
      * Creates new form Relatorio
      */
     int linha = 0;
-    int KM = 5;   
+    int KM = 1;   
     
 
     DecimalFormat formatter = new DecimalFormat("#0.000");
@@ -228,7 +228,7 @@ public class Relatorio extends javax.swing.JFrame {
 
     //calcula o tempo medio gasto do atleta
     public String velo(String temp) {
-
+        System.out.println(temp);
         DecimalFormat formatter2 = new DecimalFormat("#00");
         String array[] = new String[3];
         char array2[] = new char[3];
@@ -238,13 +238,14 @@ public class Relatorio extends javax.swing.JFrame {
         velo[0] = Integer.parseInt(array[0]);
         velo[1] = Integer.parseInt(array[1]);
         velo[2] = Integer.parseInt(array[2]);
+        System.out.println(velo[1]);
         double veloMin = (velo[0] * 60) + velo[1];
         double veloSec = (veloMin * 60) + velo[2];
-        double veloTotal = veloSec / 5;
+        double veloTotal = veloSec / KM;
         veloTotal = veloTotal / 60;
 
         String dec = String.valueOf(veloTotal);
-        System.out.println(dec);
+        
         array2[0] = dec.charAt(0);
         array2[1] = dec.charAt(2);
         array2[2] = '0';
@@ -285,13 +286,13 @@ public class Relatorio extends javax.swing.JFrame {
         setTitle("Relatório da Corrida");
         setResizable(false);
 
-        tb_relatorio.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        tb_relatorio.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         tb_relatorio.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Colocação", "Número", "Nome", "Categoria", "Tempo", "M/KM"
+                "Colocação", "Número", "Nome", "Categoria", "Tempo", "Ritmo (M/KM)"
             }
         ) {
             Class[] types = new Class [] {
@@ -324,6 +325,7 @@ public class Relatorio extends javax.swing.JFrame {
 
         comboCat.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setText("Selecione a Categoria");
 
         btImprimir.setText("Imprimir");
@@ -340,15 +342,15 @@ public class Relatorio extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(261, 261, 261)
+                        .addGap(258, 258, 258)
                         .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(comboCat, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 227, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btImprimir))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane1)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 780, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(

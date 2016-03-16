@@ -114,4 +114,22 @@ public class NumeroDao {
 
         return sucesso;
     }
+    public void limpaTabela() throws SQLException{
+        if (conn != null) {            
+            try {
+                String sql = "truncate NUMERO";
+           
+                try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                    ps.execute();                                                               
+                }
+                
+            } catch (SQLException e) {
+                System.out.println("Informações sobre o erro: "+e.getMessage());
+            }finally{
+                conn.close();
+            }
+        } else {
+            System.out.println("Você precisa criar uma conexão com o banco de dados!");
+        }
+    }     
 }

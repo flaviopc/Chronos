@@ -9,6 +9,8 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import db.Conexao;
+import db.NumeroDao;
+import db.TempoDao;
 
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -20,6 +22,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import java.awt.Color;
 import java.awt.Font;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
@@ -80,7 +84,8 @@ public class Home extends JFrame {
                 Principal novo;
                 try {
                     setVisible(false);
-
+                    new NumeroDao().limpaTabela();
+                    new TempoDao().limpaTabela();
                     novo = new Principal();
                     novo.setVisible(true);
 
@@ -100,18 +105,11 @@ public class Home extends JFrame {
         btnLimpaNumeros.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
-                    Connection conn = new Conexao().getConnection();
-                    String sql = "truncate numero";
-                    try (PreparedStatement ps = conn.prepareStatement(sql)) {
-                        if (!ps.execute()) {
-                            JOptionPane.showMessageDialog(null, "Tabela de numeros limpa");
-                        }
-
-                    }
-
-                } catch (SQLException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
+                    new NumeroDao().limpaTabela();
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
                 }
 
             }
@@ -124,21 +122,13 @@ public class Home extends JFrame {
         btnLimparTempo.setFont(new Font("Tahoma", Font.BOLD, 11));
         btnLimparTempo.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
-                try {
-                    Connection conn = new Conexao().getConnection();                   
-                    String sql = "truncate tempo";
-                    try (PreparedStatement ps = conn.prepareStatement(sql)) {
-                        if (!ps.execute()) {
-                            JOptionPane.showMessageDialog(null, "Tabelas de tempos limpa");
-                        }
-
-                    }
-
-                } catch (SQLException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
+               
+                    try {
+                        new TempoDao().limpaTabela();
+                    } catch (SQLException ex) {
+                    Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
                 }
+
             }
         });
         btnLimparTempo.setBounds(23, 179, 216, 36);
