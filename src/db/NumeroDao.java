@@ -54,14 +54,14 @@ public class NumeroDao {
                     try (PreparedStatement ps = conn.prepareStatement(sql)) {
                         ps.setInt(1, atletas[0]);
                         ps.execute();
-                        atualizarNumeros();
+                        //atualizarNumeros();
                     }
                 } else {
                     String sql = "delete from numero where NUM_codigo=?";
                     try (PreparedStatement ps = conn.prepareStatement(sql)) {
                         ps.setInt(1, atletas[0] + 1);
                         ps.execute();
-                        atualizarNumeros();
+                       // atualizarNumeros();
                     }
                 }
             } catch (SQLException e) {
@@ -105,7 +105,7 @@ public class NumeroDao {
             } catch (SQLException e) {
                 System.out.println("Informações sobre o erro: " + e.getMessage());
             } finally {
-                atualizarNumeros();
+                //atualizarNumeros();
                 conn.close();
             }
         } else {

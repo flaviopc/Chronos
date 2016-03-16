@@ -1,9 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package view;
+
 
 import db.NumeroDao;
 import db.TempoDao;
@@ -29,6 +25,8 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.UIManager;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.Position;
@@ -72,6 +70,20 @@ public class Principal extends javax.swing.JFrame {
 
         capturaTecla();
 
+        txtAddNum.getDocument().addDocumentListener(
+                new DocumentListener() {
+                    public void insertUpdate(DocumentEvent e) {
+                        pesquisarLista(txtAddNum.getText());
+                    }
+
+                    public void removeUpdate(DocumentEvent e) {
+                        pesquisarLista(txtAddNum.getText());
+                    }
+
+                    public void changedUpdate(DocumentEvent e) {
+                    }
+                }
+        );
         //Menu suspenso ao clicar com o botÃ£o direito
         //ainda não está pronto
         // tbTempo.addMouseListener(new MenuSuspenso());
@@ -109,7 +121,7 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem5.setText("jMenuItem5");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("CHRONOS 0.1");
+        setTitle("CHRONOS 1.0");
         setResizable(false);
 
         tbTempo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -232,7 +244,12 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem4.setEnabled(false);
         jMenu1.add(jMenuItem4);
 
-        jMenuItem3.setText("Sair");
+        jMenuItem3.setText("Voltar ao Inicio");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem3);
 
         jMenuBar1.add(jMenu1);
@@ -329,6 +346,11 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_txtAddNumKeyTyped
 
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        // TODO add your handling code here:
+        new Home().setVisible(true);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
     public DefaultListModel CarregarNumero() throws ClassNotFoundException, SQLException {
         DefaultListModel dlm = new DefaultListModel();
         for (model.Numero n : numeroList) {
@@ -345,18 +367,24 @@ public class Principal extends javax.swing.JFrame {
                     @Override
                     public boolean dispatchKeyEvent(KeyEvent e) {
                         //Captura a teclar Enter
-                        if (e.getID() == e.KEY_RELEASED && e.getKeyCode() == KeyEvent.VK_ENTER) {
-                            try {
-                                if (linha > corredor) {
-                                    if (inserirAtleta(txtAddNum.getText())) {
+                        if (e.getID() == e.KEY_RELEASED && e.getKeyCode() == KeyEvent.VK_ENTER && !txtAddNum.getText().equals("")) {
+                            if (linha > corredor) {
+                                try {
+                                    String n = txtAddNum.getText();
+                                    if (!inserirAtleta(n)) {
+                                        txtAddNum.setText("");
+                                        JOptionPane.showMessageDialog(null, "O numero não foi encontrado, verifique se digitou corretamente!");
+                                    } else {
                                         txtAddNum.setText("");
                                     }
+                                } catch (SQLException ex) {
+                                    Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                                } catch (ClassNotFoundException ex) {
+                                    Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
                                 }
-
-                            } catch (ClassNotFoundException ex) {
-                                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-                            } catch (SQLException ex) {
-                                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+                            } else {
+                                txtAddNum.setText("");
+                                JOptionPane.showMessageDialog(null, "Você precisa marcar um tempo para esse atleta!");
                             }
                         }
 
@@ -382,9 +410,10 @@ public class Principal extends javax.swing.JFrame {
                             tbTempo.setValueAt(tempo.getTempo(), linha++, 1);
 
                             return true;
-                        } else if (e.getID() == e.KEY_RELEASED && e.getKeyCode() == KeyEvent.VK_M && !iniciou) {
+                        } else if (e.getID() == e.KEY_RELEASED && e.getKeyCode() == KeyEvent.VK_M && !iniciou) {                           
                             JOptionPane.showMessageDialog(null, "Você precisa iniciar o cronometro antes de marcar o tempo!");
                         }
+
                         return false;
                     }
                 });
@@ -440,7 +469,7 @@ public class Principal extends javax.swing.JFrame {
 
     }
 
-    public boolean inserirAtleta(String n) throws ClassNotFoundException, SQLException {
+    public boolean inserirAtleta(String n) throws SQLException, ClassNotFoundException {
         boolean r = false;
 
         for (int i = 0; i < lisAtletas.getModel().getSize(); i++) {
@@ -501,6 +530,7 @@ public class Principal extends javax.swing.JFrame {
         };
         timer = new Timer(velocidade, action);
         timer.start();
+
     }
 
     /**
