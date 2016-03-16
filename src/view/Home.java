@@ -84,8 +84,6 @@ public class Home extends JFrame {
                 Principal novo;
                 try {
                     setVisible(false);
-                    new NumeroDao().limpaTabela();
-                    new TempoDao().limpaTabela();
                     novo = new Principal();
                     novo.setVisible(true);
 
