@@ -104,6 +104,7 @@ public class Home extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     new NumeroDao().limpaTabela();
+                    JOptionPane.showMessageDialog(null, "Os numeros foram apagados!");
                 } catch (ClassNotFoundException ex) {
                     Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (SQLException ex) {
@@ -123,6 +124,7 @@ public class Home extends JFrame {
                
                     try {
                         new TempoDao().limpaTabela();
+                        JOptionPane.showMessageDialog(null, "Os tempos foram apagados!");
                     } catch (SQLException ex) {
                     Logger.getLogger(Home.class.getName()).log(Level.SEVERE, null, ex);
                 }
