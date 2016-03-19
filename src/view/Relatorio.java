@@ -28,7 +28,7 @@ public class Relatorio extends javax.swing.JFrame {
      * Creates new form Relatorio
      */
     int linha = 0;
-    int KM = 1;   
+    int KM = 5;   
     
 
     DecimalFormat formatter = new DecimalFormat("#0.000");
