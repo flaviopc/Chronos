@@ -173,7 +173,7 @@ public class Relatorio extends javax.swing.JFrame {
 
                                 String numero = conn.rsCate.getString("ATL_numero");
                                 String nome = conn.rsCate.getString("ATL_nome");
-                                String categoria = conn.rsCate.getString("ATL_categoria");
+                                String colocacaoGeral = conn.rsCate.getString("ColocacaoGeral");
                                 String tempo = conn.rsCate.getString("Tempo");
 
                                String tempoMedio = velo(tempo);
@@ -181,7 +181,7 @@ public class Relatorio extends javax.swing.JFrame {
                                 tb_relatorio.setValueAt(cont, linha, 0);
                                 tb_relatorio.setValueAt(numero, linha, 1);
                                 tb_relatorio.setValueAt(nome, linha, 2);
-                                tb_relatorio.setValueAt(codigo, linha, 3);
+                                tb_relatorio.setValueAt(colocacaoGeral, linha, 3);
                                 tb_relatorio.setValueAt(tempo, linha, 4);
                                 tb_relatorio.setValueAt(tempoMedio, linha++, 5);
                                 cont++;
@@ -231,26 +231,45 @@ public class Relatorio extends javax.swing.JFrame {
         System.out.println(temp);
         DecimalFormat formatter2 = new DecimalFormat("#00");
         String array[] = new String[3];
-        char array2[] = new char[3];
+        char array2[] = new char[4];
 
         array = temp.split(":");
         int velo[] = new int[3];
         velo[0] = Integer.parseInt(array[0]);
         velo[1] = Integer.parseInt(array[1]);
         velo[2] = Integer.parseInt(array[2]);
-        System.out.println(velo[1]);
         double veloMin = (velo[0] * 60) + velo[1];
         double veloSec = (veloMin * 60) + velo[2];
         double veloTotal = veloSec / KM;
         veloTotal = veloTotal / 60;
 
         String dec = String.valueOf(veloTotal);
-        
+
+        if (dec.charAt(2) == '.') {
+            array2[0] = dec.charAt(0);
+            array2[1] = dec.charAt(1);
+            array2[2] = dec.charAt(3);
+            array2[3] = '0';
+            if (dec.length() >= 5) {
+                array2[3] = dec.charAt(4);
+            }
+            dec = String.valueOf(array2[2]) + array2[3];
+
+            veloTotal = Double.parseDouble(dec);
+            veloTotal = (veloTotal * 60) / 100;
+            dec = formatter2.format(veloTotal);
+            System.out.println(array2[1]);
+            String minu = String.valueOf(array2[0]) + array2[1];
+            dec = (minu + ":" + dec);
+            return dec;
+        }
+
         array2[0] = dec.charAt(0);
         array2[1] = dec.charAt(2);
         array2[2] = '0';
-        if(dec.length()>3)
+        if (dec.length() > 3) {
             array2[2] = dec.charAt(3);
+        }
         dec = String.valueOf(array2[1]) + array2[2];
 
         veloTotal = Double.parseDouble(dec);

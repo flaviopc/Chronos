@@ -71,7 +71,7 @@ public class RelatorioDao {
             System.out.println("Conexão Java-MySQL efetuada com sucesso!\n");
             try {
                 Statement stmt = conn.createStatement();
-                String query = "select TEM_codigo as ColocaçãoGeral, ATL_numero, ATL_nome, ATL_categoria, TEM_tempo as Tempo from numero, tempo, atleta "
+                String query = "select TEM_codigo as ColocacaoGeral, ATL_numero, ATL_nome, ATL_categoria, TEM_tempo as Tempo from numero, tempo, atleta "
                         + "where NUM_codigo = TEM_codigo and NUM_numero = ATL_numero and ATL_categoria like \"" + cat + "\"";
                 rsCate = stmt.executeQuery(query);
 
